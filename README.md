@@ -1,5 +1,3 @@
-![Untitled Diagram_2024-08-14T19_38_58 269Z](https://github.com/user-attachments/assets/6586e3ac-a277-4ea6-a019-58aca2a60dbb)# Crud-app
-
 ### The application is divided:
 1. Backend: Pages/sql
 2. Main  
@@ -15,5 +13,5 @@
 ![Untitled Diagram_2024-08-14T19_38_58 269Z](https://github.com/user-attachments/assets/6e6b8029-2f29-4f46-ba32-517caa6b9164)
 
 #### The application looks like:
-![Untitled Diagram_2024-08-14T19_38_58 269Z](https://github.com/user-attachments/assets/a5419fa1-1513-4f18-913b-3ea78417a8af)
 
+![Captura de pantalla 2024-08-14 164149](https://github.com/user-attachments/assets/bd4b2094-fbd1-4c7f-87c1-59b19ecdf4ca)
