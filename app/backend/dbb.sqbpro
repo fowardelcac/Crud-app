@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="dbb.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2416"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="sqlite_sequence" custom_title="0" dock_id="1" table="4,15:mainsqlite_sequence"/><dock_state state="000000ff00000000fd00000001000000020000038a00000251fc0100000001fb000000160064006f0063006b00420072006f007700730065003101000000000000038a0000011700ffffff000002980000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Constructions" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="106"/><column index="2" value="183"/><column index="3" value="300"/><column index="4" value="151"/><column index="5" value="223"/><column index="6" value="87"/><column index="7" value="124"/><column index="8" value="79"/><column index="9" value="104"/><column index="10" value="112"/><column index="11" value="89"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Contacts" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="78"/><column index="2" value="127"/><column index="3" value="103"/><column index="4" value="175"/><column index="5" value="207"/><column index="6" value="89"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Maintenances" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="107"/><column index="2" value="45"/><column index="3" value="207"/><column index="4" value="122"/><column index="5" value="124"/><column index="6" value="64"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="49"/><column index="2" value="39"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">CREATE TABLE Companies (
+    Company_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Company_name TEXT NOT NULL,
+    Location TEXT,
+    Company_phone TEXT,
+    Company_email TEXT
+);
+
+CREATE TABLE Contacts (
+    Contact_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Contact_name TEXT NOT NULL,
+    Contact_phone TEXT NOT NULL,
+    Contact_email TEXT,
+    Job_position TEXT,
+    Company_id INTEGER NOT NULL,
+    FOREIGN KEY(Company_id) REFERENCES Companies(Company_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Constructions (
+    Construction_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Construction_name TEXT NOT NULL,
+    Description TEXT,
+    Type_of_task TEXT NOT NULL,
+    Direction TEXT,
+    Start_date TEXT,
+    Possible_end_date TEXT,
+    Budget REAL,
+    Total_payment REAL,
+    Partial_payment REAL,
+    Company_id INTEGER NOT NULL,
+    FOREIGN KEY(Company_id) REFERENCES Companies(Company_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Items (
+    Item_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Item_name TEXT NOT NULL,
+    Description TEXT,
+    Start_date TEXT,
+    Possible_end_date TEXT,
+    Completed TEXT,
+    Construction_id INTEGER NOT NULL,
+    FOREIGN KEY(Construction_id) REFERENCES Constructions(Construction_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Maintenances (
+    Maintenance_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Type TEXT, 
+    Description TEXT,
+    Last_maintenance TEXT,
+    Next_maintenance TEXT,
+    Item_id INTEGER NOT NULL,
+    FOREIGN KEY(Item_id) REFERENCES Items(Item_id) ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX idx_company ON Companies(Company_name);
+CREATE INDEX idx_construction ON Constructions(Construction_name);
+
+INSERT INTO Companies (Company_name, Location, Company_phone, Company_email)
+VALUES 
+    (&quot;Siglo 21&quot;, &quot;ituzaingo 221 Cordoba&quot;, &quot;351682242&quot;, &quot;@Siglo21&quot;),
+    (&quot;Siglo10&quot;, &quot;nueva 221&quot;, &quot;122222&quot;, &quot;@12345&quot;),
+    (&quot;BLasPAscal&quot;, &quot;celso barrios&quot;, &quot;351682242&quot;, &quot;@blaspascal&quot;),
+    (&quot;Empresa A&quot;, &quot;Avenida Siempre Viva 123 Springfield&quot;, &quot;123456789&quot;, &quot;contacto@empresaa.com&quot;),
+    (&quot;Empresa B&quot;, &quot;CShelbyville&quot;, &quot;987654321&quot;, &quot;info@empresab.com&quot;),
+    (&quot;Empresa C&quot;, &quot;Boulevard de los Sueños 789&quot;, &quot;555666777&quot;, &quot;ventas@empresac.com&quot;),
+    (&quot;Empresa D&quot;, &quot;Ruta 66&quot;, &quot;444555666&quot;, &quot;servicios@empresad.com&quot;),
+    (&quot;Empresa E&quot;, &quot;Calle del Comercio 10&quot;, &quot;333444555&quot;, &quot;compras@empresae.com&quot;),
+    (&quot;Empresa F&quot;, &quot;Avenida Principal 15&quot;, &quot;111222333&quot;, &quot;administracion@empresaf.com&quot;),
+    (&quot;Empresa G&quot;, &quot;Gotham&quot;, &quot;999888777&quot;, &quot;soporte@empresag.com&quot;),
+    (&quot;Empresa H&quot;, &quot;Plaza Mayor 25&quot;, &quot;888777666&quot;, &quot;contacto@empresah.com&quot;),
+    (&quot;Empresa I&quot;, &quot;Parque Industrial 30&quot;, &quot;777666555&quot;, &quot;info@empresai.com&quot;),
+    (&quot;Empresa J&quot;, &quot;Puerto Libre&quot;, &quot;666555444&quot;, &quot;ventas@empresaj.com&quot;);
+
+INSERT INTO Contacts (Contact_name, Contact_phone, Contact_email, Job_position, Company_id)
+VALUES
+    (&quot;Javier Milei&quot;, &quot;35151872&quot;, &quot;@VLLC&quot;, &quot;Presidente&quot;, 1),
+    (&quot;Solana&quot;, &quot;1234567&quot;, &quot;juana@loka.com&quot;, &quot;CEO&quot;, 1),
+    (&quot;Dua&quot;, &quot;77494007&quot;, &quot;dualipa@gmail.com&quot;, &quot;CTO&quot;, 2),
+    (&quot;Ana Gómez&quot;, &quot;5551234&quot;, &quot;ana@empresaa.com&quot;, &quot;Gerente de Ventas&quot;, 1),
+    (&quot;Luis Martínez&quot;, &quot;5555678&quot;, &quot;luis@empresab.com&quot;, &quot;Director de Marketing&quot;, 2),
+    (&quot;Carlos Pérez&quot;, &quot;5559101&quot;, &quot;carlos@empresac.com&quot;, &quot;Jefe de Proyectos&quot;, 3),
+    (&quot;María López&quot;, &quot;5551122&quot;, &quot;maria@empresad.com&quot;, &quot;Responsable de RRHH&quot;, 4),
+    (&quot;Fernando Ruiz&quot;, &quot;5553344&quot;, &quot;fernando@empresae.com&quot;, &quot;Técnico de Soporte&quot;, 5),
+    (&quot;Lucía Sánchez&quot;, &quot;5555566&quot;, &quot;lucia@empresaf.com&quot;, &quot;Asistente Administrativa&quot;, 6),
+    (&quot;David Fernández&quot;, &quot;5557788&quot;, &quot;david@empresag.com&quot;, &quot;Analista Financiero&quot;, 7),
+    (&quot;Elena García&quot;, &quot;5559900&quot;, &quot;elena@empresah.com&quot;, &quot;Consultora de IT&quot;, 8),
+    (&quot;José Ramírez&quot;, &quot;5552233&quot;, &quot;jose@empresai.com&quot;, &quot;Ingeniero de Software&quot;, 9),
+    (&quot;Isabel Morales&quot;, &quot;5554455&quot;, &quot;isabel@empresaj.com&quot;, &quot;Coordinadora de Logística&quot;, 10);
+
+INSERT INTO Constructions (Construction_name, Description, Type_of_task, Direction, Start_date, Possible_end_date, Budget, Total_payment, Partial_payment, Company_id)
+VALUES
+    (&quot;Edificio Central&quot;, &quot;Construcción del edificio central de oficinas&quot;, &quot;Construcción&quot;, &quot;Avenida Siempre Viva 123&quot;, &quot;01/01/2024&quot;, &quot;31/12/2024&quot;, 1000000.00, 500000.00, 250000.00, 1),
+    (&quot;Planta Industrial&quot;, &quot;Edificación de una nueva planta industrial&quot;, &quot;Plomería&quot;, &quot;Calle Falsa 456&quot;, &quot;15/02/2024&quot;, &quot;15/02/2025&quot;, 2000000.00, 1000000.00, 500000.00, 2),
+    (&quot;Centro Comercial&quot;, &quot;Construcción de un centro comercial&quot;, &quot;Electricidad&quot;, &quot;Boulevard de los Sueños 789&quot;, &quot;01/03/2024&quot;, &quot;01/03/2025&quot;, 1500000.00, 750000.00, 375000.00, 3),
+    (&quot;Parque Empresarial&quot;, &quot;Desarrollo de un parque empresarial&quot;, &quot;Aires y servicios&quot;, &quot;Ruta 66&quot;, &quot;10/04/2024&quot;, &quot;10/04/2025&quot;, 3000000.00, 1500000.00, 750000.00, 4),
+    (&quot;Torre Residencial&quot;, &quot;Construcción de una torre de apartamentos&quot;, &quot;Construcción&quot;, &quot;Calle del Comercio 10&quot;, &quot;05/05/2024&quot;, &quot;05/05/2025&quot;, 2500000.00, 1250000.00, 625000.00, 5),
+    (&quot;Complejo Deportivo&quot;, &quot;Desarrollo de un complejo deportivo&quot;, &quot;Aires y servicios&quot;, &quot;Avenida Principal 15&quot;, &quot;15/06/2024&quot;, &quot;15/06/2025&quot;, 1800000.00, 900000.00, 450000.00, 6),
+    (&quot;Hospital General&quot;, &quot;Construcción de un hospital general&quot;, &quot;Aires y servicios&quot;, &quot;Calle Secundaria 20&quot;, &quot;01/07/2024&quot;, &quot;01/07/2025&quot;, 2200000.00, 1100000.00, 550000.00, 7),
+    (&quot;Centro de Convenciones&quot;, &quot;Edificación de un centro de convenciones&quot;, &quot;Aires y servicios&quot;, &quot;Plaza Mayor 25&quot;, &quot;10/08/2024&quot;, &quot;10/08/2025&quot;, 2700000.00, 1350000.00, 675000.00, 8),
+    (&quot;Universidad&quot;, &quot;Construcción de una universidad&quot;, &quot;Aires y servicios&quot;, &quot;Parque Industrial 30&quot;, &quot;01/09/2024&quot;, &quot;01/09/2025&quot;, 3200000.00, 1600000.00, 800000.00, 9),
+    (&quot;Estadio&quot;, &quot;Desarrollo de un estadio&quot;, &quot;Aires y servicios&quot;, &quot;Zona Franca 35&quot;, &quot;15/10/2024&quot;, &quot;15/10/2025&quot;, 3500000.00, 1750000.00, 875000.00, 10);
+
+INSERT INTO Items (Item_name, Description, Start_date, Possible_end_date, Completed, Construction_id)
+VALUES
+    (&quot;Fundación y estructura&quot;, &quot;Construcción de la fundación y la estructura del edificio&quot;, &quot;05/01/2024&quot;, &quot;05/03/2024&quot;, &quot;No&quot;, 1),
+    (&quot;Instalaciones eléctricas&quot;, &quot;Instalación del sistema eléctrico del edificio&quot;, &quot;06/03/2024&quot;, &quot;06/05/2024&quot;, &quot;No&quot;, 1),
+    (&quot;Acabados interiores&quot;, &quot;Pintura y acabados interiores&quot;, &quot;07/05/2024&quot;, &quot;07/07/2024&quot;, &quot;No&quot;, 1),
+    (&quot;Montaje de maquinaria&quot;, &quot;Instalación de maquinaria en la planta&quot;, &quot;20/02/2024&quot;, &quot;20/06/2024&quot;, &quot;No&quot;, 2),
+    (&quot;Sistemas de seguridad&quot;, &quot;Implementación de sistemas de seguridad industrial&quot;, &quot;21/06/2024&quot;, &quot;21/10/2024&quot;, &quot;No&quot;, 2),
+    (&quot;Estructura del centro&quot;, &quot;Construcción de la estructura del centro comercial&quot;, &quot;10/03/2024&quot;, &quot;10/06/2024&quot;, &quot;No&quot;, 3),
+    (&quot;Tiendas y locales&quot;, &quot;Construcción de tiendas y locales&quot;, &quot;11/06/2024&quot;, &quot;11/09/2024&quot;, &quot;No&quot;, 3),
+    (&quot;Vías de acceso&quot;, &quot;Construcción de vías de acceso al parque empresarial&quot;, &quot;20/04/2024&quot;, &quot;20/07/2024&quot;, &quot;No&quot;, 4),
+    (&quot;Zonas verdes&quot;, &quot;Desarrollo de zonas verdes y áreas recreativas&quot;, &quot;21/07/2024&quot;, &quot;21/10/2024&quot;, &quot;No&quot;, 4),
+    (&quot;Fundación de la torre&quot;, &quot;Construcción de la fundación de la torre&quot;, &quot;10/05/2024&quot;, &quot;10/07/2024&quot;, &quot;No&quot;, 5),
+    (&quot;Apartamentos&quot;, &quot;Construcción de apartamentos&quot;, &quot;11/07/2024&quot;, &quot;11/02/2025&quot;, &quot;No&quot;, 5),
+    (&quot;Campos deportivos&quot;, &quot;Construcción de campos deportivos&quot;, &quot;20/06/2024&quot;, &quot;20/10/2024&quot;, &quot;No&quot;, 6),
+    (&quot;Gimnasio&quot;, &quot;Construcción del gimnasio del complejo&quot;, &quot;21/10/2024&quot;, &quot;21/01/2025&quot;, &quot;No&quot;, 6),
+    (&quot;Fundación del hospital&quot;, &quot;Construcción de la fundación del hospital&quot;, &quot;10/07/2024&quot;, &quot;10/09/2024&quot;, &quot;No&quot;, 7),
+    (&quot;Salas de operaciones&quot;, &quot;Construcción y equipamiento de salas de operaciones&quot;, &quot;11/09/2024&quot;, &quot;11/01/2025&quot;, &quot;No&quot;, 7),
+    (&quot;Salas de conferencias&quot;, &quot;Construcción de salas de conferencias&quot;, &quot;15/08/2024&quot;, &quot;15/12/2024&quot;, &quot;No&quot;, 8),
+    (&quot;Área de exposiciones&quot;, &quot;Desarrollo del área de exposiciones&quot;, &quot;16/12/2024&quot;, &quot;16/03/2025&quot;, &quot;No&quot;, 8),
+    (&quot;Aulas y laboratorios&quot;, &quot;Construcción de aulas y laboratorios&quot;, &quot;10/09/2024&quot;, &quot;10/02/2025&quot;, &quot;No&quot;, 9),
+    (&quot;Biblioteca&quot;, &quot;Construcción de la biblioteca universitaria&quot;, &quot;11/02/2025&quot;, &quot;11/05/2025&quot;, &quot;No&quot;, 9),
+    (&quot;Cancha principal&quot;, &quot;Construcción de la cancha principal del estadio&quot;, &quot;20/10/2024&quot;, &quot;20/02/2025&quot;, &quot;No&quot;, 10),
+    (&quot;Graderías&quot;, &quot;Construcción de graderías&quot;, &quot;21/02/2025&quot;, &quot;21/06/2025&quot;, &quot;No&quot;, 10);
+
+INSERT INTO Maintenances (Type, Description, Last_maintenance, Next_maintenance, Item_id)
+VALUES
+    (&quot;Correctivo&quot;, &quot;Reparación de estructura&quot;, &quot;01/08/2024&quot;, &quot;01/11/2024&quot;, 1),
+    (&quot;Preventivo&quot;, &quot;Inspección eléctrica&quot;, &quot;15/07/2024&quot;, &quot;15/01/2025&quot;, 2),
+    (&quot;Preventivo&quot;, &quot;Mantenimiento de pintura&quot;, &quot;01/09/2024&quot;, &quot;01/03/2025&quot;, 3),
+    (&quot;Correctivo&quot;, &quot;Revisión de maquinaria&quot;, &quot;10/08/2024&quot;, &quot;10/12/2024&quot;, 4),
+    (&quot;Preventivo&quot;, &quot;Actualización de sistemas&quot;, &quot;01/11/2024&quot;, &quot;01/05/2025&quot;, 5),
+    (&quot;Correctivo&quot;, &quot;Reparación de estructura&quot;, &quot;15/09/2024&quot;, &quot;15/03/2025&quot;, 6),
+    (&quot;Preventivo&quot;, &quot;Limpieza y mantenimiento&quot;, &quot;01/10/2024&quot;, &quot;01/04/2025&quot;, 7),
+    (&quot;Preventivo&quot;, &quot;Podado y mantenimiento&quot;, &quot;15/10/2024&quot;, &quot;15/04/2025&quot;, 8),
+    (&quot;Preventivo&quot;, &quot;Inspección de cimientos&quot;, &quot;20/09/2024&quot;, &quot;20/03/2025&quot;, 9),
+    (&quot;Correctivo&quot;, &quot;Reparación de biblioteca&quot;, &quot;01/03/2025&quot;, &quot;01/09/2025&quot;, 10);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
